@@ -322,7 +322,7 @@
 
   /* MODAL */
   .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45);
     z-index: 1000; display: flex; align-items: center; justify-content: center;
     opacity: 0; pointer-events: none; transition: opacity 0.2s;
   }
@@ -375,7 +375,7 @@
   .tip:hover::after {
     content: attr(data-tip);
     position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
-    background: #000; color: #fff; font-size: 11px;
+    background: #333; color: #fff; font-size: 11px;
     padding: 4px 8px; border-radius: 5px; white-space: nowrap;
     margin-bottom: 4px; z-index: 99;
   }
@@ -477,17 +477,17 @@
     <div class="score-grid">
       <div class="score-item" data-team="1">
         <div class="score-team">BM2-1팀</div>
-        <div class="score-num" id="score-t1" style="color:#60a5fa">0</div>
+        <div class="score-num" id="score-t1" style="color:#1d4ed8">0</div>
         <div class="score-label">빙고</div>
       </div>
       <div class="score-item" data-team="2">
         <div class="score-team">BM2-2팀</div>
-        <div class="score-num" id="score-t2" style="color:#c084fc">0</div>
+        <div class="score-num" id="score-t2" style="color:#6d28d9">0</div>
         <div class="score-label">빙고</div>
       </div>
       <div class="score-item" data-team="3">
         <div class="score-team">BM2-3팀</div>
-        <div class="score-num" id="score-t3" style="color:#fb923c">0</div>
+        <div class="score-num" id="score-t3" style="color:#c2500a">0</div>
         <div class="score-label">빙고</div>
       </div>
     </div>
@@ -544,7 +544,7 @@ const TEAMS = [
   {
     id: 1,
     name: "BM2-1팀",
-    color: "#60a5fa",
+    color: "#1d4ed8",
     members: [
       { name: "김하늘", rank: "대리" },
       { name: "정세영", rank: "주임" },
@@ -556,7 +556,7 @@ const TEAMS = [
   {
     id: 2,
     name: "BM2-2팀",
-    color: "#c084fc",
+    color: "#6d28d9",
     members: [
       { name: "서해진", rank: "주임" },
       { name: "박서영", rank: "주임" },
@@ -568,7 +568,7 @@ const TEAMS = [
   {
     id: 3,
     name: "BM2-3팀",
-    color: "#fb923c",
+    color: "#c2500a",
     members: [
       { name: "최보경", rank: "주임" },
       { name: "박소은", rank: "주임" },
