@@ -512,7 +512,33 @@
   </div>
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+// ===================== FIREBASE INIT =====================
+const firebaseConfig = {
+  apiKey: "AIzaSyBhIzA6jRbn8TMASogqtbZFQ68nIySd5DU",
+  authDomain: "bingo-promotion.firebaseapp.com",
+  projectId: "bingo-promotion",
+  storageBucket: "bingo-promotion.firebasestorage.app",
+  messagingSenderId: "58496532142",
+  appId: "1:58496532142:web:3b399b884e7b3a5283773f"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// 편집 권한 계정
+const ADMIN_EMAIL = "dlwlsrl0904@gmail.com";
+let isAdmin = false;
+let currentUser = null;
+
+// 편집 가능 여부 반환
+function canEdit() { return isAdmin; }
+
 // ===================== DATA =====================
 const TEAMS = [
   {
@@ -553,7 +579,6 @@ const TEAMS = [
   }
 ];
 
-// 직급별 미션 정의
 const MISSIONS = {
   "대리": [
     { id: "d1", text: "이관매출 150만" },
@@ -588,27 +613,133 @@ const COMMON_MISSIONS = [
   { id: "c4", text: "인턴\n이관합산 700만" },
 ];
 
-// ===================== STATE =====================
-let state = {
-  teams: {}
-};
+// ===================== STATE (로컬 UI용) =====================
+let state = { teams: {} };
 
-// 각 팀 초기화
-TEAMS.forEach(t => {
-  const usedMissions = {};
-  t.members.forEach(m => { usedMissions[m.name] = new Set(); });
-  usedMissions['__COMMON__'] = new Set();
-  state.teams[t.id] = {
-    locked: false,
-    selectedMember: null,
-    pendingMission: null,
-    cells: Array(25).fill(null),
-    usedMissions
-  };
-});
+function initLocalState() {
+  TEAMS.forEach(t => {
+    const usedMissions = {};
+    t.members.forEach(m => { usedMissions[m.name] = new Set(); });
+    usedMissions['__COMMON__'] = new Set();
+    state.teams[t.id] = {
+      locked: false,
+      selectedMember: null,
+      pendingMission: null,
+      cells: Array(25).fill(null),
+      usedMissions
+    };
+  });
+}
+initLocalState();
 
-// 선택 중인 셀 (배치할 셀 인덱스)
 let lockTargetTeam = null;
+let isSaving = false; // 저장 중복 방지
+
+// ===================== FIREBASE 저장/불러오기 =====================
+
+// Firestore에 저장 (cells + locked만 저장, usedMissions는 cells에서 재계산)
+async function saveTeamToFirestore(teamId) {
+  if (!canEdit()) return;
+  if (isSaving) return;
+  isSaving = true;
+  try {
+    const ts = state.teams[teamId];
+    const docRef = doc(db, "bingo", `team${teamId}`);
+    await setDoc(docRef, {
+      locked: ts.locked,
+      cells: ts.cells.map(c => c === null ? null : {
+        missionId: c.missionId,
+        missionText: c.missionText,
+        personName: c.personName,
+        checked: c.checked
+      })
+    });
+    showSaveToast('저장되었습니다 ✓');
+  } catch (e) {
+    console.error("저장 실패:", e);
+    showSaveToast('저장 실패 — 네트워크 확인', true);
+  } finally {
+    isSaving = false;
+  }
+}
+
+// Firestore 데이터 → 로컬 state로 적용
+function applyFirestoreData(teamId, data) {
+  const ts = state.teams[teamId];
+  const team = TEAMS.find(t => t.id === teamId);
+
+  ts.locked = data.locked || false;
+  ts.cells = (data.cells || Array(25).fill(null)).map(c => c || null);
+
+  // usedMissions 재계산
+  team.members.forEach(m => { ts.usedMissions[m.name] = new Set(); });
+  ts.usedMissions['__COMMON__'] = new Set();
+  ts.cells.forEach(c => {
+    if (!c) return;
+    const ownerKey = c.personName === '공동' ? '__COMMON__' : c.personName;
+    if (ts.usedMissions[ownerKey]) ts.usedMissions[ownerKey].add(c.missionId);
+  });
+}
+
+// 실시간 리스너 등록
+function subscribeAll() {
+  TEAMS.forEach(team => {
+    const docRef = doc(db, "bingo", `team${team.id}`);
+    onSnapshot(docRef, (snap) => {
+      if (snap.exists()) {
+        applyFirestoreData(team.id, snap.data());
+      }
+      renderAll();
+    }, (err) => {
+      console.error(`팀${team.id} 리스너 오류:`, err);
+    });
+  });
+}
+
+// ===================== TOAST =====================
+function showSaveToast(msg, isError = false) {
+  let toast = document.getElementById('saveToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'saveToast';
+    toast.style.cssText = `position:fixed;bottom:28px;right:28px;z-index:9999;
+      padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;
+      font-family:'Noto Sans KR',sans-serif;
+      box-shadow:0 4px 20px rgba(0,0,0,0.15);
+      transition:opacity 0.3s;`;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.background = isError ? '#dc2626' : '#0e9e6a';
+  toast.style.color = '#fff';
+  toast.style.opacity = '1';
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 2500);
+}
+
+// 연결 상태 표시
+function showConnectionStatus(connected) {
+  let el = document.getElementById('connStatus');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'connStatus';
+    el.style.cssText = `position:fixed;top:14px;right:18px;z-index:9999;
+      font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;
+      font-family:'Noto Sans KR',sans-serif;`;
+    document.body.appendChild(el);
+  }
+  if (connected) {
+    el.textContent = '🟢 Firebase 연결됨';
+    el.style.background = 'rgba(14,158,106,0.12)';
+    el.style.color = '#0e9e6a';
+    el.style.border = '1px solid rgba(14,158,106,0.3)';
+  } else {
+    el.textContent = '🔴 연결 끊김';
+    el.style.background = 'rgba(220,38,38,0.1)';
+    el.style.color = '#dc2626';
+    el.style.border = '1px solid rgba(220,38,38,0.3)';
+  }
+}
 
 // ===================== RENDER =====================
 function renderAll() {
@@ -626,7 +757,6 @@ function buildTeamCard(team) {
   card.className = 'team-card';
   card.dataset.team = team.id;
 
-  // 헤더
   const locked = ts.locked;
   card.innerHTML = `
     <div class="team-header">
@@ -642,7 +772,6 @@ function buildTeamCard(team) {
   const body = card.querySelector(`#body-t${team.id}`);
 
   if (!locked) {
-    // 사원 선택 버튼
     const selWrap = document.createElement('div');
     selWrap.className = 'member-selector';
     selWrap.innerHTML = `<label>📌 미션 배치할 팀원 선택</label>`;
@@ -654,13 +783,11 @@ function buildTeamCard(team) {
       selWrap.appendChild(btn);
     });
 
-    // 공동 버튼 추가
     const commonBtn = document.createElement('button');
-    commonBtn.className = 'member-btn' + (ts.selectedMember === '__COMMON__' ? ' active-common' : '');
-    commonBtn.style.borderColor = ts.selectedMember === '__COMMON__' ? 'var(--accent3)' : '';
-    commonBtn.style.background = ts.selectedMember === '__COMMON__' ? 'rgba(34,212,142,0.15)' : '';
-    commonBtn.style.color = ts.selectedMember === '__COMMON__' ? 'var(--accent3)' : '';
-    commonBtn.style.fontWeight = ts.selectedMember === '__COMMON__' ? '700' : '';
+    commonBtn.className = 'member-btn';
+    commonBtn.style.cssText = ts.selectedMember === '__COMMON__'
+      ? 'border-color:var(--accent3);background:rgba(14,158,106,0.1);color:var(--accent3);font-weight:700;'
+      : '';
     commonBtn.innerHTML = `🤝 공동 <span class="member-rank">4칸</span>`;
     commonBtn.onclick = () => selectMember(team.id, '__COMMON__');
     selWrap.appendChild(commonBtn);
@@ -676,27 +803,19 @@ function buildTeamCard(team) {
   const bingoGrid = document.createElement('div');
   bingoGrid.className = 'bingo-grid';
   bingoGrid.id = `bingo-${team.id}`;
-
   const bingoLines = getBingoLines(ts.cells);
 
   for (let i = 0; i < 25; i++) {
     const cell = document.createElement('div');
     const cellData = ts.cells[i];
     const isBingoLine = bingoLines.has(i);
-
     cell.className = 'bingo-cell';
     if (isBingoLine) cell.classList.add('bingo-line');
 
     if (!cellData) {
-      if (locked) {
-        cell.classList.add('locked-empty');
-      } else {
-        cell.classList.add('empty');
-      }
+      cell.classList.add(locked ? 'locked-empty' : 'empty');
       cell.innerHTML = `<span class="cell-num">${i+1}</span>`;
-      if (!locked) {
-        cell.onclick = () => onCellClick(team.id, i);
-      }
+      if (!locked) cell.onclick = () => onCellClick(team.id, i);
     } else {
       cell.classList.add(locked ? 'locked-assigned' : 'assigned');
       if (cellData.checked) cell.classList.add('checked');
@@ -705,39 +824,32 @@ function buildTeamCard(team) {
         <div class="cell-mission">${cellData.missionText.replace(/\n/g,'<br>')}</div>
         <div class="cell-person">${cellData.personName}</div>
       `;
-      if (!locked) {
-        cell.onclick = () => onCellClick(team.id, i);
-      } else {
-        cell.onclick = () => toggleCheck(team.id, i);
-      }
+      if (!locked) cell.onclick = () => onCellClick(team.id, i);
+      else cell.onclick = () => toggleCheck(team.id, i);
     }
     bingoGrid.appendChild(cell);
   }
   body.appendChild(bingoGrid);
 
-  // Progress
+  // 진행률
   const assigned = ts.cells.filter(c => c !== null).length;
   const checked = ts.cells.filter(c => c && c.checked).length;
-  const total = 25;
-
   const progWrap = document.createElement('div');
   progWrap.innerHTML = `
-    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${(assigned/total*100).toFixed(0)}%"></div></div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${(assigned/25*100).toFixed(0)}%"></div></div>
     <div class="progress-label">배치: ${assigned}/25칸</div>
   `;
   body.appendChild(progWrap);
 
-  // Bingo count
   const bingoCount = getBingoCount(ts.cells);
   const bingoInfo = document.createElement('div');
   bingoInfo.className = 'bingo-count';
   bingoInfo.innerHTML = `
     <span class="bingo-badge">🎯 빙고: ${bingoCount}줄</span>
-    <span class="bingo-badge" style="background:rgba(0,196,255,0.1);color:var(--accent);border-color:rgba(0,196,255,0.2)">✅ 체크: ${checked}칸</span>
+    <span class="bingo-badge" style="background:rgba(0,120,200,0.08);color:var(--accent);border-color:rgba(0,120,200,0.2)">✅ 체크: ${checked}칸</span>
   `;
   body.appendChild(bingoInfo);
 
-  // Lock button
   if (!locked) {
     const lockBtn = document.createElement('button');
     lockBtn.className = 'lock-btn';
@@ -753,16 +865,11 @@ function buildTeamCard(team) {
 }
 
 // ===================== INTERACTIONS =====================
-
-// 선택된 미션 (칸에 배치 대기 중)
-// state.teams[id].pendingMission = { missionId, missionText, personLabel }
-
 function selectMember(teamId, memberName) {
   const ts = state.teams[teamId];
   ts.selectedMember = memberName;
-  ts.pendingMission = null; // 미션 선택 초기화
+  ts.pendingMission = null;
   renderAll();
-  // 이름 선택 직후 미션 패널 바로 표시
   showMissionPanel(teamId);
 }
 
@@ -772,7 +879,6 @@ function showMissionPanel(teamId) {
   const body = document.getElementById(`body-t${teamId}`);
   if (!body) return;
 
-  // 기존 패널 제거
   const old = document.getElementById(`panel-${teamId}`);
   if (old) old.remove();
 
@@ -802,8 +908,8 @@ function showMissionPanel(teamId) {
     const used = ts.usedMissions[personKey] && ts.usedMissions[personKey].has(m.id);
     const isPending = ts.pendingMission && ts.pendingMission.missionId === m.id;
     const item = document.createElement('div');
-    item.className = 'mission-item' + (used ? ' used' : '') + (isPending ? ' pending-selected' : '');
-    if (isPending) item.style.cssText = 'border-color:var(--gold);color:var(--gold);background:rgba(245,200,66,0.1);';
+    item.className = 'mission-item' + (used ? ' used' : '');
+    if (isPending) item.style.cssText = 'border-color:var(--gold);color:var(--gold);background:rgba(184,134,11,0.08);';
 
     const rankClass = isCommon ? 'common' : (() => {
       const member = team.members.find(mb => mb.name === ts.selectedMember);
@@ -820,30 +926,30 @@ function showMissionPanel(teamId) {
     if (!used) {
       item.onclick = () => {
         ts.pendingMission = { missionId: m.id, missionText: m.text, personLabel };
-        showMissionPanel(teamId); // 패널 업데이트
+        showMissionPanel(teamId);
       };
     }
     mlist.appendChild(item);
   });
 
-  // 빙고 그리드 앞에 삽입
   const bingoGrid = document.getElementById(`bingo-${teamId}`);
   if (bingoGrid) body.insertBefore(panel, bingoGrid);
 }
 
 function onCellClick(teamId, cellIndex) {
+  if (!canEdit()) { alert("편집 권한이 없습니다. 관리자만 수정할 수 있어요."); return; }
   const ts = state.teams[teamId];
   if (ts.locked) return;
 
   const cellData = ts.cells[cellIndex];
 
   if (cellData) {
-    // 이미 배치된 칸 → 제거
     const ownerKey = cellData.personName === '공동' ? '__COMMON__' : cellData.personName;
     if (ts.usedMissions[ownerKey]) ts.usedMissions[ownerKey].delete(cellData.missionId);
     ts.cells[cellIndex] = null;
     renderAll();
     if (ts.selectedMember) showMissionPanel(teamId);
+    saveTeamToFirestore(teamId);
     return;
   }
 
@@ -856,7 +962,6 @@ function onCellClick(teamId, cellIndex) {
     return;
   }
 
-  // 미션 배치
   const { missionId, missionText, personLabel } = ts.pendingMission;
   ts.cells[cellIndex] = { missionId, missionText, personName: personLabel, checked: false };
   const ownerKey = personLabel === '공동' ? '__COMMON__' : personLabel;
@@ -864,21 +969,23 @@ function onCellClick(teamId, cellIndex) {
   ts.pendingMission = null;
   renderAll();
   if (ts.selectedMember) showMissionPanel(teamId);
+  saveTeamToFirestore(teamId);
 }
 
-
-
 function toggleCheck(teamId, cellIndex) {
+  if (!canEdit()) { alert("편집 권한이 없습니다. 관리자만 수정할 수 있어요."); return; }
   const ts = state.teams[teamId];
   if (!ts.locked) return;
   const cellData = ts.cells[cellIndex];
   if (!cellData) return;
   cellData.checked = !cellData.checked;
   renderAll();
+  saveTeamToFirestore(teamId);
 }
 
 // ===================== LOCK =====================
 function openModal(teamId) {
+  if (!canEdit()) { alert("편집 권한이 없습니다. 관리자만 확정할 수 있어요."); return; }
   lockTargetTeam = teamId;
   document.getElementById('modalOverlay').classList.add('show');
 }
@@ -893,52 +1000,26 @@ function confirmLock() {
   state.teams[lockTargetTeam].pendingMission = null;
   closeModal();
   renderAll();
+  saveTeamToFirestore(lockTargetTeam);
+  lockTargetTeam = null;
 }
 
 // ===================== BINGO LOGIC =====================
 function getBingoLines(cells) {
   const highlighted = new Set();
   const lines = [];
-
-  // 가로
-  for (let r = 0; r < 5; r++) {
-    const row = [];
-    for (let c = 0; c < 5; c++) row.push(r*5+c);
-    lines.push(row);
-  }
-  // 세로
-  for (let c = 0; c < 5; c++) {
-    const col = [];
-    for (let r = 0; r < 5; r++) col.push(r*5+c);
-    lines.push(col);
-  }
-  // 대각선
-  lines.push([0,6,12,18,24]);
-  lines.push([4,8,12,16,20]);
-
-  lines.forEach(line => {
-    if (line.every(i => cells[i] && cells[i].checked)) {
-      line.forEach(i => highlighted.add(i));
-    }
-  });
+  for (let r = 0; r < 5; r++) { const row = []; for (let c = 0; c < 5; c++) row.push(r*5+c); lines.push(row); }
+  for (let c = 0; c < 5; c++) { const col = []; for (let r = 0; r < 5; r++) col.push(r*5+c); lines.push(col); }
+  lines.push([0,6,12,18,24]); lines.push([4,8,12,16,20]);
+  lines.forEach(line => { if (line.every(i => cells[i] && cells[i].checked)) line.forEach(i => highlighted.add(i)); });
   return highlighted;
 }
 
 function getBingoCount(cells) {
   const lines = [];
-  for (let r = 0; r < 5; r++) {
-    const row = [];
-    for (let c = 0; c < 5; c++) row.push(r*5+c);
-    lines.push(row);
-  }
-  for (let c = 0; c < 5; c++) {
-    const col = [];
-    for (let r = 0; r < 5; r++) col.push(r*5+c);
-    lines.push(col);
-  }
-  lines.push([0,6,12,18,24]);
-  lines.push([4,8,12,16,20]);
-
+  for (let r = 0; r < 5; r++) { const row = []; for (let c = 0; c < 5; c++) row.push(r*5+c); lines.push(row); }
+  for (let c = 0; c < 5; c++) { const col = []; for (let r = 0; r < 5; r++) col.push(r*5+c); lines.push(col); }
+  lines.push([0,6,12,18,24]); lines.push([4,8,12,16,20]);
   return lines.filter(line => line.every(i => cells[i] && cells[i].checked)).length;
 }
 
@@ -949,8 +1030,52 @@ function updateScoreboard() {
   });
 }
 
+// ===================== AUTH UI =====================
+function renderAuthBar() {
+  let bar = document.getElementById('authBar');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'authBar';
+    bar.style.cssText = `position:fixed;top:14px;left:50%;transform:translateX(-50%);
+      z-index:9999;display:flex;align-items:center;gap:10px;
+      background:#fff;border:1px solid var(--border);border-radius:24px;
+      padding:6px 16px;box-shadow:0 2px 12px rgba(0,0,0,0.1);
+      font-family:'Noto Sans KR',sans-serif;font-size:12px;`;
+    document.body.appendChild(bar);
+  }
+  if (currentUser) {
+    bar.innerHTML = `
+      <img src="${currentUser.photoURL || ''}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'">
+      <span style="color:var(--text);font-weight:500;">${currentUser.displayName || currentUser.email}</span>
+      ${isAdmin ? '<span style="background:rgba(14,158,106,0.12);color:#0e9e6a;font-weight:700;padding:2px 8px;border-radius:10px;font-size:11px;">✏️ 편집모드</span>' : '<span style="background:rgba(100,116,139,0.1);color:var(--text-dim);padding:2px 8px;border-radius:10px;font-size:11px;">👁 읽기전용</span>'}
+      <button id="signOutBtn" style="background:none;border:1px solid var(--border);border-radius:10px;padding:3px 10px;cursor:pointer;color:var(--text-dim);font-family:'Noto Sans KR',sans-serif;font-size:11px;">로그아웃</button>
+    `;
+    document.getElementById('signOutBtn').onclick = () => signOut(auth);
+  } else {
+    bar.innerHTML = `
+      <span style="color:var(--text-dim);">로그인하면 편집 가능</span>
+      <button id="signInBtn" style="background:linear-gradient(135deg,#0078c8,#005fa3);color:#fff;border:none;border-radius:10px;padding:5px 14px;cursor:pointer;font-weight:700;font-family:'Noto Sans KR',sans-serif;font-size:12px;">🔑 Google 로그인</button>
+    `;
+    document.getElementById('signInBtn').onclick = () => signInWithPopup(auth, provider).catch(e => alert('로그인 실패: ' + e.message));
+  }
+}
+
 // ===================== INIT =====================
-renderAll();
+// Auth 상태 감지
+onAuthStateChanged(auth, (user) => {
+  currentUser = user;
+  isAdmin = user && user.email === ADMIN_EMAIL;
+  renderAuthBar();
+  showConnectionStatus(true);
+  renderAll();
+});
+
+subscribeAll(); // Firestore 실시간 리스너 시작
+renderAll();    // 초기 렌더 (로그인 전에도 보이도록)
+
+// 전역 함수 노출 (onclick용)
+window.closeModal = closeModal;
+window.confirmLock = confirmLock;
 </script>
 </body>
 </html>
