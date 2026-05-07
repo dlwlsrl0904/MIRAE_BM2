@@ -531,8 +531,12 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// 편집 권한 계정
-const ADMIN_EMAIL = "dlwlsrl0904@gmail.com";
+// 편집 권한 계정 (본부장 + 팀장)
+const ADMIN_EMAILS = [
+  "dlwlsrl0904@gmail.com",
+  "hs00051666@gmail.com",
+  "chunsa0823@gmail.com"
+];
 let isAdmin = false;
 let currentUser = null;
 
@@ -1064,7 +1068,7 @@ function renderAuthBar() {
 // Auth 상태 감지
 onAuthStateChanged(auth, (user) => {
   currentUser = user;
-  isAdmin = user && user.email === ADMIN_EMAIL;
+  isAdmin = user && ADMIN_EMAILS.includes(user.email);
   renderAuthBar();
   showConnectionStatus(true);
   renderAll();
