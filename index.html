@@ -23,383 +23,115 @@
     --checked: #0e9e6a;
     --danger: #dc2626;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Noto Sans KR', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* BG grid effect */
+  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; min-height: 100vh; overflow-x: hidden; }
   body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(0,120,200,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,120,200,0.05) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
+    content: ''; position: fixed; inset: 0;
+    background-image: linear-gradient(rgba(0,120,200,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,120,200,0.05) 1px, transparent 1px);
+    background-size: 40px 40px; pointer-events: none; z-index: 0;
   }
-
-  .wrapper { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 24px 20px 60px; }
-
-  /* HEADER */
-  header {
-    text-align: center;
-    padding: 40px 0 32px;
-    position: relative;
-  }
-  header::after {
-    content: '';
-    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 200px; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  }
-  .header-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, rgba(0,120,200,0.12), rgba(0,120,200,0.05));
-    border: 1px solid rgba(0,120,200,0.3);
-    color: var(--accent);
-    font-size: 11px; font-weight: 700; letter-spacing: 3px;
-    padding: 5px 16px; border-radius: 20px;
-    margin-bottom: 14px;
-    text-transform: uppercase;
-  }
-  header h1 {
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: clamp(28px, 5vw, 52px);
-    background: linear-gradient(135deg, #1a202c 0%, var(--accent) 60%, var(--accent2) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    line-height: 1.1; margin-bottom: 10px;
-  }
-  .header-meta {
-    font-size: 13px; color: var(--text-dim);
-    display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
-    margin-top: 10px;
-  }
+  .wrapper { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 70px 20px 60px; }
+  header { text-align: center; padding: 40px 0 32px; position: relative; }
+  header::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 200px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+  .header-badge { display: inline-block; background: linear-gradient(135deg, rgba(0,120,200,0.12), rgba(0,120,200,0.05)); border: 1px solid rgba(0,120,200,0.3); color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 3px; padding: 5px 16px; border-radius: 20px; margin-bottom: 14px; text-transform: uppercase; }
+  header h1 { font-family: 'Black Han Sans', sans-serif; font-size: clamp(28px, 5vw, 52px); background: linear-gradient(135deg, #1a202c 0%, var(--accent) 60%, var(--accent2) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; margin-bottom: 10px; }
+  .header-meta { font-size: 13px; color: var(--text-dim); display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 10px; }
   .header-meta span { display: flex; align-items: center; gap: 5px; }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
-
-  /* INFO BOX */
-  .info-bar {
-    background: linear-gradient(135deg, rgba(184,134,11,0.08), rgba(184,134,11,0.03));
-    border: 1px solid rgba(184,134,11,0.3);
-    border-radius: 10px;
-    padding: 12px 20px;
-    margin: 24px 0;
-    font-size: 13px; color: var(--gold);
-    display: flex; flex-wrap: wrap; gap: 6px 24px;
-  }
+  .info-bar { background: linear-gradient(135deg, rgba(184,134,11,0.08), rgba(184,134,11,0.03)); border: 1px solid rgba(184,134,11,0.3); border-radius: 10px; padding: 12px 20px; margin: 24px 0; font-size: 13px; color: var(--gold); display: flex; flex-wrap: wrap; gap: 6px 24px; }
   .info-bar strong { color: #1a202c; }
-
-  /* MISSION TABLE */
-  .section-title {
-    font-size: 13px; font-weight: 700; letter-spacing: 2px;
-    color: var(--accent); text-transform: uppercase;
-    margin-bottom: 12px;
-    display: flex; align-items: center; gap: 8px;
-  }
+  .section-title { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
   .section-title::before { content: ''; width: 3px; height: 16px; background: var(--accent); border-radius: 2px; }
-
-  .mission-table-wrap {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; overflow: hidden; margin-bottom: 32px;
-  }
+  .mission-table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 32px; }
   .mission-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-  .mission-table th {
-    padding: 10px 14px; text-align: left; font-weight: 700;
-    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
-    border-bottom: 1px solid var(--border);
-  }
+  .mission-table th { padding: 10px 14px; text-align: left; font-weight: 700; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
   .mission-table th:nth-child(1) { background: rgba(37,99,235,0.08); color: var(--team1); }
   .mission-table th:nth-child(2) { background: rgba(124,58,237,0.08); color: var(--team2); }
   .mission-table th:nth-child(3) { background: rgba(234,108,0,0.08); color: var(--team3); }
   .mission-table th:nth-child(4) { background: rgba(14,158,106,0.08); color: var(--accent3); }
-  .mission-table td {
-    padding: 9px 14px; vertical-align: top;
-    border-bottom: 1px solid var(--border);
-    line-height: 1.5;
-  }
+  .mission-table td { padding: 9px 14px; vertical-align: top; border-bottom: 1px solid var(--border); line-height: 1.5; }
   .mission-table tr:last-child td { border-bottom: none; }
   .mission-table tr:hover td { background: rgba(0,0,0,0.02); }
-  .rank-badge {
-    display: inline-block; font-size: 10px; font-weight: 700;
-    padding: 2px 7px; border-radius: 10px; margin-right: 5px;
-  }
+  .rank-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; margin-right: 5px; }
   .rank-daeri { background: rgba(37,99,235,0.1); color: var(--team1); }
   .rank-sawon { background: rgba(124,58,237,0.1); color: var(--team2); }
   .rank-intern { background: rgba(234,108,0,0.1); color: var(--team3); }
   .rank-common { background: rgba(14,158,106,0.1); color: var(--accent3); }
-
-  /* TEAMS GRID */
-  .teams-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-    gap: 24px;
-    margin-bottom: 40px;
-  }
-
-  .team-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
+  .teams-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 24px; margin-bottom: 40px; }
+  .team-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
   .team-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.12); }
-
-  .team-header {
-    padding: 18px 22px 14px;
-    display: flex; align-items: center; justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-    position: relative; overflow: hidden;
-  }
-  .team-header::before {
-    content: '';
-    position: absolute; inset: 0;
-    opacity: 0.04;
-  }
+  .team-header { padding: 18px 22px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+  .team-header::before { content: ''; position: absolute; inset: 0; opacity: 0.04; }
   .team-card[data-team="1"] .team-header::before { background: var(--team1); }
   .team-card[data-team="2"] .team-header::before { background: var(--team2); }
   .team-card[data-team="3"] .team-header::before { background: var(--team3); }
-
-  .team-name {
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: 20px;
-  }
+  .team-name { font-family: 'Black Han Sans', sans-serif; font-size: 20px; }
   .team-card[data-team="1"] .team-name { color: #1d4ed8; }
   .team-card[data-team="2"] .team-name { color: #6d28d9; }
   .team-card[data-team="3"] .team-name { color: #c2500a; }
-
   .team-members { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
-
-  .team-status {
-    font-size: 11px; font-weight: 700; letter-spacing: 1px;
-    padding: 4px 12px; border-radius: 20px;
-  }
+  .team-status { font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
   .status-setup { background: rgba(184,134,11,0.1); color: #92650a; border: 1px solid rgba(184,134,11,0.3); white-space: nowrap; }
   .status-locked { background: rgba(14,158,106,0.1); color: var(--accent3); border: 1px solid rgba(14,158,106,0.3); white-space: nowrap; }
-
   .team-body { padding: 20px 22px; }
-
-  /* MEMBER SELECTOR */
-  .member-selector {
-    margin-bottom: 16px;
-    display: flex; flex-wrap: wrap; gap: 8px;
-    align-items: center;
-  }
+  .member-selector { margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .member-selector label { font-size: 12px; color: var(--text-dim); width: 100%; margin-bottom: 4px; }
-  .member-btn {
-    padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
-    background: var(--surface2); color: var(--text-dim);
-    font-size: 12px; font-family: 'Noto Sans KR', sans-serif;
-    cursor: pointer; transition: all 0.15s;
-  }
+  .member-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface2); color: var(--text-dim); font-size: 12px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all 0.15s; }
   .member-btn:hover { border-color: var(--accent); color: var(--accent); }
   .member-btn.active { border-color: var(--accent); background: rgba(0,120,200,0.1); color: var(--accent); font-weight: 700; }
   .member-rank { font-size: 10px; opacity: 0.7; }
-
-  /* BINGO GRID */
-  .bingo-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 5px;
-    margin-bottom: 14px;
-  }
-  .bingo-cell {
-    aspect-ratio: 1;
-    border-radius: 8px;
-    border: 1.5px solid var(--border);
-    background: var(--surface2);
-    cursor: pointer;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center;
-    padding: 4px;
-    font-size: 9.5px;
-    line-height: 1.3;
-    transition: all 0.15s;
-    position: relative;
-    overflow: hidden;
-    color: var(--text-dim);
-  }
-  .bingo-cell .cell-num {
-    font-size: 11px; font-weight: 700;
-    color: rgba(0,0,0,0.2);
-    position: absolute; top: 3px; left: 5px;
-  }
+  .bingo-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 14px; }
+  .bingo-cell { aspect-ratio: 1; border-radius: 8px; border: 1.5px solid var(--border); background: var(--surface2); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4px; font-size: 9.5px; line-height: 1.3; transition: all 0.15s; position: relative; overflow: hidden; color: var(--text-dim); }
+  .bingo-cell .cell-num { font-size: 11px; font-weight: 700; color: rgba(0,0,0,0.2); position: absolute; top: 3px; left: 5px; }
   .bingo-cell.empty:hover { border-color: rgba(184,134,11,0.5); background: rgba(184,134,11,0.05); }
-  .bingo-cell.assigned {
-    color: var(--text);
-    border-color: rgba(0,120,200,0.35);
-    background: rgba(0,120,200,0.06);
-    cursor: pointer;
-  }
+  .bingo-cell.assigned { color: var(--text); border-color: rgba(0,120,200,0.35); background: rgba(0,120,200,0.06); cursor: pointer; }
   .bingo-cell.assigned:hover { border-color: var(--accent); background: rgba(0,120,200,0.12); }
-  .bingo-cell.checked {
-    border-color: var(--checked) !important;
-    background: rgba(14,158,106,0.12) !important;
-    color: #0a5c3c !important;
-  }
-  .bingo-cell.checked::after {
-    content: '✓';
-    position: absolute; top: 2px; right: 4px;
-    color: var(--checked); font-size: 12px; font-weight: 900;
-  }
-  .bingo-cell.locked-empty {
-    cursor: default;
-    opacity: 0.5;
-  }
+  .bingo-cell.checked { border-color: var(--checked) !important; background: rgba(14,158,106,0.12) !important; color: #0a5c3c !important; }
+  .bingo-cell.checked::after { content: '✓'; position: absolute; top: 2px; right: 4px; color: var(--checked); font-size: 12px; font-weight: 900; }
+  .bingo-cell.locked-empty { cursor: default; opacity: 0.5; }
   .bingo-cell.locked-assigned { cursor: pointer; }
-
   .cell-mission { font-size: 9px; line-height: 1.3; margin-top: 8px; }
   .cell-person { font-size: 8.5px; color: var(--text-dim); margin-top: 2px; font-weight: 700; }
-
-  /* BINGO LINE highlight */
-  .bingo-cell.bingo-line {
-    box-shadow: 0 0 0 2px var(--gold);
-    border-color: var(--gold) !important;
-  }
-
-  /* LOCK BUTTON */
-  .lock-btn {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    background: linear-gradient(135deg, var(--accent), #0088bb);
-    color: #fff; font-family: 'Noto Sans KR', sans-serif;
-    font-size: 13px; font-weight: 700; cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 10px;
-  }
+  .bingo-cell.bingo-line { box-shadow: 0 0 0 2px var(--gold); border-color: var(--gold) !important; }
+  .lock-btn { width: 100%; padding: 10px; border-radius: 10px; border: none; background: linear-gradient(135deg, var(--accent), #0088bb); color: #fff; font-family: 'Noto Sans KR', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; }
   .lock-btn:hover { opacity: 0.85; transform: scale(1.01); }
   .lock-btn:disabled { background: var(--border); color: var(--text-dim); cursor: not-allowed; transform: none; }
-
-  .progress-bar-wrap {
-    background: var(--surface2); border-radius: 20px; height: 6px;
-    overflow: hidden; margin-bottom: 8px;
-  }
-  .progress-bar-fill {
-    height: 100%; border-radius: 20px;
-    background: linear-gradient(90deg, var(--accent), var(--accent3));
-    transition: width 0.3s ease;
-  }
+  .progress-bar-wrap { background: var(--surface2); border-radius: 20px; height: 6px; overflow: hidden; margin-bottom: 8px; }
+  .progress-bar-fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--accent), var(--accent3)); transition: width 0.3s ease; }
   .progress-label { font-size: 11px; color: var(--text-dim); text-align: right; }
-
-  .bingo-count {
-    display: flex; gap: 8px; flex-wrap: wrap;
-    margin-top: 8px;
-  }
-  .bingo-badge {
-    font-size: 11px; padding: 3px 10px; border-radius: 10px;
-    background: rgba(184,134,11,0.08); color: var(--gold);
-    border: 1px solid rgba(184,134,11,0.25);
-  }
-
-  /* MISSION ASSIGN PANEL */
-  .assign-panel {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 10px; padding: 14px; margin-bottom: 14px;
-    display: none;
-  }
+  .bingo-count { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .bingo-badge { font-size: 11px; padding: 3px 10px; border-radius: 10px; background: rgba(184,134,11,0.08); color: var(--gold); border: 1px solid rgba(184,134,11,0.25); }
+  .assign-panel { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 14px; display: none; }
   .assign-panel.show { display: block; }
   .assign-panel h4 { font-size: 12px; color: var(--accent); margin-bottom: 10px; }
   .mission-list { display: flex; flex-direction: column; gap: 5px; max-height: 200px; overflow-y: auto; }
-  .mission-item {
-    padding: 7px 12px; border-radius: 7px; border: 1px solid var(--border);
-    background: var(--surface); cursor: pointer;
-    font-size: 11px; transition: all 0.15s;
-    display: flex; align-items: center; gap: 8px;
-  }
+  .mission-item { padding: 7px 12px; border-radius: 7px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; font-size: 11px; transition: all 0.15s; display: flex; align-items: center; gap: 8px; }
   .mission-item:hover { border-color: var(--accent); color: var(--accent); }
   .mission-item.used { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
-
-  /* MODAL */
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.45);
-    z-index: 1000; display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none; transition: opacity 0.2s;
-  }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
   .modal-overlay.show { opacity: 1; pointer-events: all; }
-  .modal {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 18px; padding: 32px 28px;
-    max-width: 420px; width: 90%; text-align: center;
-    transform: scale(0.92); transition: transform 0.2s;
-  }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 32px 28px; max-width: 420px; width: 90%; text-align: center; transform: scale(0.92); transition: transform 0.2s; }
   .modal-overlay.show .modal { transform: scale(1); }
   .modal-icon { font-size: 44px; margin-bottom: 14px; }
   .modal h3 { font-size: 20px; font-weight: 900; margin-bottom: 10px; }
   .modal p { font-size: 13px; color: var(--text-dim); line-height: 1.7; margin-bottom: 22px; }
   .modal-btns { display: flex; gap: 10px; justify-content: center; }
-  .btn-confirm {
-    padding: 10px 28px; border-radius: 10px; border: none;
-    background: linear-gradient(135deg, var(--accent2), #cc4400);
-    color: #fff; font-weight: 700; cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
-  }
-  .btn-cancel {
-    padding: 10px 28px; border-radius: 10px;
-    border: 1px solid var(--border); background: transparent;
-    color: var(--text-dim); cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
-  }
-
-  /* SCOREBOARD */
-  .scoreboard {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; padding: 22px;
-    margin-bottom: 32px;
-  }
+  .btn-confirm { padding: 10px 28px; border-radius: 10px; border: none; background: linear-gradient(135deg, var(--accent2), #cc4400); color: #fff; font-weight: 700; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; }
+  .btn-cancel { padding: 10px 28px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: var(--text-dim); cursor: pointer; font-family: 'Noto Sans KR', sans-serif; }
+  .scoreboard { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 32px; }
   .score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
-  .score-item {
-    background: var(--surface2); border-radius: 10px; padding: 14px;
-    text-align: center; border: 1px solid var(--border);
-  }
+  .score-item { background: var(--surface2); border-radius: 10px; padding: 14px; text-align: center; border: 1px solid var(--border); }
   .score-item .score-team { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
-  .score-item .score-num {
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: 32px; line-height: 1;
-  }
+  .score-item .score-num { font-family: 'Black Han Sans', sans-serif; font-size: 32px; line-height: 1; }
   .score-item .score-label { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
   .score-item[data-team="1"] .score-team { color: #1d4ed8; }
   .score-item[data-team="2"] .score-team { color: #6d28d9; }
   .score-item[data-team="3"] .score-team { color: #c2500a; }
-
-  /* TOOLTIP */
-  .tip { position: relative; }
-  .tip:hover::after {
-    content: attr(data-tip);
-    position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
-    background: #333; color: #fff; font-size: 11px;
-    padding: 4px 8px; border-radius: 5px; white-space: nowrap;
-    margin-bottom: 4px; z-index: 99;
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 820px) {
-    .teams-grid { grid-template-columns: 1fr; }
-    .score-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  /* Animations */
+  .locked-notice { font-size: 11px; color: var(--accent3); text-align: center; padding: 6px; background: rgba(14,158,106,0.06); border-radius: 7px; margin-bottom: 10px; border: 1px solid rgba(14,158,106,0.2); }
+  @media (max-width: 820px) { .teams-grid { grid-template-columns: 1fr; } }
   @keyframes pop { 0%{transform:scale(0.8)} 60%{transform:scale(1.1)} 100%{transform:scale(1)} }
   @keyframes glow { 0%,100%{box-shadow:0 0 10px rgba(184,134,11,0.3)} 50%{box-shadow:0 0 20px rgba(184,134,11,0.6)} }
-  .cell-pop { animation: pop 0.3s ease forwards; }
   .bingo-line { animation: glow 1.5s ease-in-out infinite; }
-
-  .locked-notice {
-    font-size: 11px; color: var(--accent3); text-align: center;
-    padding: 6px; background: rgba(14,158,106,0.06);
-    border-radius: 7px; margin-bottom: 10px;
-    border: 1px solid rgba(14,158,106,0.2);
-  }
-
-  /* scrollbar */
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -407,8 +139,6 @@
 </head>
 <body>
 <div class="wrapper">
-
-  <!-- HEADER -->
   <header>
     <div class="header-badge">BM2본부 · 빙고 프로모션</div>
     <h1>2본부 최강팀은? 🏆</h1>
@@ -424,7 +154,6 @@
     ⚠️ <strong>패널티:</strong> 꼴지팀 6월 30일까지 데일리 영업가이드 진행 (대리/주임 30건 40분 · 사원 40건 50분 · 인턴 50건 60분) · 영업가이드 미달성시 본부장 사유보고 · <span style="color:var(--accent3)">★ 최소 13칸 달성시 패널티 면제</span>
   </div>
 
-  <!-- MISSION TABLE -->
   <div class="section-title">직급별 미션 현황</div>
   <div class="mission-table-wrap">
     <table class="mission-table">
@@ -437,77 +166,36 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>이관매출 150만</td>
-          <td>이관매출 200만</td>
-          <td>이관매출 300만</td>
-          <td>총이관매출 1,500만</td>
-        </tr>
-        <tr>
-          <td>제안서 30건<br><small style="color:var(--text-dim)">(일 최대 3건)</small></td>
-          <td>제안서 40건<br><small style="color:var(--text-dim)">(일 최대 3건)</small></td>
-          <td>제안서 50건<br><small style="color:var(--text-dim)">(일 최대 3건)</small></td>
-          <td>GFA 신규 9건</td>
-        </tr>
-        <tr>
-          <td>이관건수 2건<br><small style="color:var(--text-dim)">(월 50만원 이상)</small></td>
-          <td>이관건수 3건<br><small style="color:var(--text-dim)">(월 30만원 이상)</small></td>
-          <td>이관건수 5건<br><small style="color:var(--text-dim)">(월 30만원 이상)</small></td>
-          <td>인턴+사원<br>이관합산 1,000만원</td>
-        </tr>
-        <tr>
-          <td>—</td>
-          <td>ADVoost 신규 2건</td>
-          <td>ADVoost 신규 2건</td>
-          <td>인턴<br>이관합산 700만원</td>
-        </tr>
-        <tr>
-          <td>—</td>
-          <td>기타매체 신규 1건</td>
-          <td>권한오픈 1건 (100만원↑)</td>
-          <td>—</td>
-        </tr>
+        <tr><td>이관매출 150만</td><td>이관매출 200만</td><td>이관매출 300만</td><td>총이관매출 1,500만</td></tr>
+        <tr><td>제안서 30건<br><small style="color:var(--text-dim)">(일 최대 3건)</small></td><td>제안서 40건<br><small style="color:var(--text-dim)">(일 최대 3건)</small></td><td>제안서 50건<br><small style="color:var(--text-dim)">(일 최대 3건)</small></td><td>GFA 신규 9건</td></tr>
+        <tr><td>이관건수 2건<br><small style="color:var(--text-dim)">(월 50만원 이상)</small></td><td>이관건수 3건<br><small style="color:var(--text-dim)">(월 30만원 이상)</small></td><td>이관건수 5건<br><small style="color:var(--text-dim)">(월 30만원 이상)</small></td><td>인턴+사원<br>이관합산 1,000만원</td></tr>
+        <tr><td>—</td><td>ADVoost 신규 2건</td><td>ADVoost 신규 2건</td><td>인턴<br>이관합산 700만원</td></tr>
+        <tr><td>—</td><td>기타매체 신규 1건</td><td>권한오픈 1건 (100만원↑)</td><td>—</td></tr>
       </tbody>
     </table>
   </div>
 
-  <!-- SCOREBOARD -->
   <div class="section-title">팀별 빙고 현황</div>
   <div class="scoreboard">
     <div class="score-grid">
-      <div class="score-item" data-team="1">
-        <div class="score-team">BM2-1팀</div>
-        <div class="score-num" id="score-t1" style="color:#1d4ed8">0</div>
-        <div class="score-label">빙고</div>
-      </div>
-      <div class="score-item" data-team="2">
-        <div class="score-team">BM2-2팀</div>
-        <div class="score-num" id="score-t2" style="color:#6d28d9">0</div>
-        <div class="score-label">빙고</div>
-      </div>
-      <div class="score-item" data-team="3">
-        <div class="score-team">BM2-3팀</div>
-        <div class="score-num" id="score-t3" style="color:#c2500a">0</div>
-        <div class="score-label">빙고</div>
-      </div>
+      <div class="score-item" data-team="1"><div class="score-team">BM2-1팀</div><div class="score-num" id="score-t1" style="color:#1d4ed8">0</div><div class="score-label">빙고</div></div>
+      <div class="score-item" data-team="2"><div class="score-team">BM2-2팀</div><div class="score-num" id="score-t2" style="color:#6d28d9">0</div><div class="score-label">빙고</div></div>
+      <div class="score-item" data-team="3"><div class="score-team">BM2-3팀</div><div class="score-num" id="score-t3" style="color:#c2500a">0</div><div class="score-label">빙고</div></div>
     </div>
   </div>
 
-  <!-- TEAM CARDS -->
   <div class="section-title">팀별 빙고판</div>
   <div class="teams-grid" id="teamsGrid"></div>
-
 </div>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-icon">🔒</div>
     <h3>빙고판을 확정하시겠습니까?</h3>
     <p>확정 후에는 <strong>미션 배치를 수정할 수 없습니다.</strong><br>팀원 모두 동의 후 확정해 주세요.</p>
     <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal()">취소</button>
-      <button class="btn-confirm" onclick="confirmLock()">확정하기</button>
+      <button class="btn-cancel" onclick="window.closeModal()">취소</button>
+      <button class="btn-confirm" onclick="window.confirmLock()">확정하기</button>
     </div>
   </div>
 </div>
@@ -517,7 +205,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-// ===================== FIREBASE INIT =====================
 const firebaseConfig = {
   apiKey: "AIzaSyBhIzA6jRbn8TMASogqtbZFQ68nIySd5DU",
   authDomain: "bingo-promotion.firebaseapp.com",
@@ -526,98 +213,37 @@ const firebaseConfig = {
   messagingSenderId: "58496532142",
   appId: "1:58496532142:web:3b399b884e7b3a5283773f"
 };
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// 편집 권한 계정 (본부장 + 팀장)
-const ADMIN_EMAILS = [
-  "dlwlsrl0904@gmail.com",
-  "hs00051666@gmail.com",
-  "chunsa0823@gmail.com"
-];
+const ADMIN_EMAILS = ["dlwlsrl0904@gmail.com", "hs00051666@gmail.com", "chunsa0823@gmail.com"];
 let isAdmin = false;
 let currentUser = null;
+let lockTargetTeam = null;
 
-// 편집 가능 여부 반환
 function canEdit() { return isAdmin; }
 
-// ===================== DATA =====================
 const TEAMS = [
-  {
-    id: 1,
-    name: "BM2-1팀",
-    color: "#1d4ed8",
-    members: [
-      { name: "김하늘", rank: "대리" },
-      { name: "정세영", rank: "주임" },
-      { name: "윤소영", rank: "사원" },
-      { name: "박태민", rank: "인턴" },
-      { name: "서진여", rank: "인턴" },
-    ]
-  },
-  {
-    id: 2,
-    name: "BM2-2팀",
-    color: "#6d28d9",
-    members: [
-      { name: "서해진", rank: "주임" },
-      { name: "박서영", rank: "주임" },
-      { name: "안소은", rank: "사원" },
-      { name: "박아연", rank: "인턴" },
-      { name: "장영진", rank: "인턴" },
-    ]
-  },
-  {
-    id: 3,
-    name: "BM2-3팀",
-    color: "#c2500a",
-    members: [
-      { name: "최보경", rank: "주임" },
-      { name: "박소은", rank: "주임" },
-      { name: "장익준", rank: "사원" },
-      { name: "차민경", rank: "인턴" },
-      { name: "김윤석", rank: "인턴" },
-    ]
-  }
+  { id: 1, name: "BM2-1팀", members: [{ name: "김하늘", rank: "대리" }, { name: "정세영", rank: "주임" }, { name: "윤소영", rank: "사원" }, { name: "박태민", rank: "인턴" }, { name: "서진여", rank: "인턴" }] },
+  { id: 2, name: "BM2-2팀", members: [{ name: "서해진", rank: "주임" }, { name: "박서영", rank: "주임" }, { name: "안소은", rank: "사원" }, { name: "박아연", rank: "인턴" }, { name: "장영진", rank: "인턴" }] },
+  { id: 3, name: "BM2-3팀", members: [{ name: "최보경", rank: "주임" }, { name: "박소은", rank: "주임" }, { name: "장익준", rank: "사원" }, { name: "차민경", rank: "인턴" }, { name: "김윤석", rank: "인턴" }] }
 ];
 
 const MISSIONS = {
-  "대리": [
-    { id: "d1", text: "이관매출 150만" },
-    { id: "d2", text: "제안서 30건\n(일 최대 3건)" },
-    { id: "d3", text: "이관건수 2건\n(월 50만↑)" },
-  ],
-  "주임": [
-    { id: "j1", text: "이관매출 150만" },
-    { id: "j2", text: "제안서 30건\n(일 최대 3건)" },
-    { id: "j3", text: "이관건수 2건\n(월 50만↑)" },
-  ],
-  "사원": [
-    { id: "s1", text: "이관매출 200만" },
-    { id: "s2", text: "제안서 40건\n(일 최대 3건)" },
-    { id: "s3", text: "이관건수 3건\n(월 30만↑)" },
-    { id: "s4", text: "ADVoost 신규 2건" },
-    { id: "s5", text: "기타매체 신규 1건" },
-  ],
-  "인턴": [
-    { id: "i1", text: "이관매출 300만" },
-    { id: "i2", text: "제안서 50건\n(일 최대 3건)" },
-    { id: "i3", text: "이관건수 5건\n(월 30만↑)" },
-    { id: "i4", text: "ADVoost 신규 2건" },
-    { id: "i5", text: "권한오픈 1건\n(100만원↑)" },
-  ]
+  "대리": [{ id:"d1", text:"이관매출 150만" }, { id:"d2", text:"제안서 30건\n(일 최대 3건)" }, { id:"d3", text:"이관건수 2건\n(월 50만↑)" }],
+  "주임": [{ id:"j1", text:"이관매출 150만" }, { id:"j2", text:"제안서 30건\n(일 최대 3건)" }, { id:"j3", text:"이관건수 2건\n(월 50만↑)" }],
+  "사원": [{ id:"s1", text:"이관매출 200만" }, { id:"s2", text:"제안서 40건\n(일 최대 3건)" }, { id:"s3", text:"이관건수 3건\n(월 30만↑)" }, { id:"s4", text:"ADVoost 신규 2건" }, { id:"s5", text:"기타매체 신규 1건" }],
+  "인턴": [{ id:"i1", text:"이관매출 300만" }, { id:"i2", text:"제안서 50건\n(일 최대 3건)" }, { id:"i3", text:"이관건수 5건\n(월 30만↑)" }, { id:"i4", text:"ADVoost 신규 2건" }, { id:"i5", text:"권한오픈 1건\n(100만원↑)" }]
 };
 
 const COMMON_MISSIONS = [
-  { id: "c1", text: "총이관매출 1,500만" },
-  { id: "c2", text: "GFA 신규 9건" },
-  { id: "c3", text: "인턴+사원\n이관합산 1,000만" },
-  { id: "c4", text: "인턴\n이관합산 700만" },
+  { id:"c1", text:"총이관매출 1,500만" }, { id:"c2", text:"GFA 신규 9건" },
+  { id:"c3", text:"인턴+사원\n이관합산 1,000만" }, { id:"c4", text:"인턴\n이관합산 700만" }
 ];
 
-// ===================== STATE (로컬 UI용) =====================
 let state = { teams: {} };
 
 function initLocalState() {
@@ -625,123 +251,93 @@ function initLocalState() {
     const usedMissions = {};
     t.members.forEach(m => { usedMissions[m.name] = new Set(); });
     usedMissions['__COMMON__'] = new Set();
-    state.teams[t.id] = {
-      locked: false,
-      selectedMember: null,
-      pendingMission: null,
-      cells: Array(25).fill(null),
-      usedMissions
-    };
+    state.teams[t.id] = { locked: false, selectedMember: null, pendingMission: null, cells: Array(25).fill(null), usedMissions };
   });
 }
 initLocalState();
 
-let lockTargetTeam = null;
-let isSaving = false; // 저장 중복 방지
-
-// ===================== FIREBASE 저장/불러오기 =====================
-
-// Firestore에 저장 (cells + locked만 저장, usedMissions는 cells에서 재계산)
+// ===================== FIREBASE =====================
 async function saveTeamToFirestore(teamId) {
   if (!canEdit()) return;
-  if (isSaving) return;
-  isSaving = true;
   try {
     const ts = state.teams[teamId];
     const docRef = doc(db, "bingo", `team${teamId}`);
     await setDoc(docRef, {
       locked: ts.locked,
-      cells: ts.cells.map(c => c === null ? null : {
-        missionId: c.missionId,
-        missionText: c.missionText,
-        personName: c.personName,
-        checked: c.checked
-      })
+      cells: ts.cells.map(c => c === null ? null : { missionId: c.missionId, missionText: c.missionText, personName: c.personName, checked: c.checked })
     });
-    showSaveToast('저장되었습니다 ✓');
+    showToast('저장되었습니다 ✓');
   } catch (e) {
     console.error("저장 실패:", e);
-    showSaveToast('저장 실패 — 네트워크 확인', true);
-  } finally {
-    isSaving = false;
+    showToast('저장 실패: ' + e.code, true);
   }
 }
 
-// Firestore 데이터 → 로컬 state로 적용
 function applyFirestoreData(teamId, data) {
   const ts = state.teams[teamId];
   const team = TEAMS.find(t => t.id === teamId);
-
   ts.locked = data.locked || false;
   ts.cells = (data.cells || Array(25).fill(null)).map(c => c || null);
-
-  // usedMissions 재계산
   team.members.forEach(m => { ts.usedMissions[m.name] = new Set(); });
   ts.usedMissions['__COMMON__'] = new Set();
   ts.cells.forEach(c => {
     if (!c) return;
-    const ownerKey = c.personName === '공동' ? '__COMMON__' : c.personName;
-    if (ts.usedMissions[ownerKey]) ts.usedMissions[ownerKey].add(c.missionId);
+    const key = c.personName === '공동' ? '__COMMON__' : c.personName;
+    if (ts.usedMissions[key]) ts.usedMissions[key].add(c.missionId);
   });
 }
 
-// 실시간 리스너 등록
 function subscribeAll() {
   TEAMS.forEach(team => {
-    const docRef = doc(db, "bingo", `team${team.id}`);
-    onSnapshot(docRef, (snap) => {
-      if (snap.exists()) {
-        applyFirestoreData(team.id, snap.data());
-      }
+    onSnapshot(doc(db, "bingo", `team${team.id}`), snap => {
+      if (snap.exists()) applyFirestoreData(team.id, snap.data());
       renderAll();
-    }, (err) => {
-      console.error(`팀${team.id} 리스너 오류:`, err);
-    });
+    }, err => console.error(`팀${team.id} 오류:`, err));
   });
 }
 
-// ===================== TOAST =====================
-function showSaveToast(msg, isError = false) {
-  let toast = document.getElementById('saveToast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.id = 'saveToast';
-    toast.style.cssText = `position:fixed;bottom:28px;right:28px;z-index:9999;
-      padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;
-      font-family:'Noto Sans KR',sans-serif;
-      box-shadow:0 4px 20px rgba(0,0,0,0.15);
-      transition:opacity 0.3s;`;
-    document.body.appendChild(toast);
+// ===================== TOAST / STATUS =====================
+function showToast(msg, isError = false) {
+  let t = document.getElementById('saveToast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'saveToast';
+    t.style.cssText = 'position:fixed;bottom:28px;right:28px;z-index:9999;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;font-family:"Noto Sans KR",sans-serif;box-shadow:0 4px 20px rgba(0,0,0,0.15);transition:opacity 0.3s;';
+    document.body.appendChild(t);
   }
-  toast.textContent = msg;
-  toast.style.background = isError ? '#dc2626' : '#0e9e6a';
-  toast.style.color = '#fff';
-  toast.style.opacity = '1';
-  clearTimeout(toast._timer);
-  toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 2500);
+  t.textContent = msg;
+  t.style.background = isError ? '#dc2626' : '#0e9e6a';
+  t.style.color = '#fff';
+  t.style.opacity = '1';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => { t.style.opacity = '0'; }, 3000);
 }
 
-// 연결 상태 표시
-function showConnectionStatus(connected) {
-  let el = document.getElementById('connStatus');
-  if (!el) {
-    el = document.createElement('div');
-    el.id = 'connStatus';
-    el.style.cssText = `position:fixed;top:14px;right:18px;z-index:9999;
-      font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;
-      font-family:'Noto Sans KR',sans-serif;`;
-    document.body.appendChild(el);
+function renderAuthBar() {
+  let bar = document.getElementById('authBar');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'authBar';
+    bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border-bottom:1px solid #dde3ec;padding:8px 16px;font-family:"Noto Sans KR",sans-serif;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);';
+    document.body.appendChild(bar);
   }
-  if (connected) {
-    el.textContent = '🟢 Firebase 연결됨';
-    el.style.background = 'rgba(14,158,106,0.12)';
-    el.style.color = '#0e9e6a';
-    el.style.border = '1px solid rgba(14,158,106,0.3)';
+  if (currentUser) {
+    bar.innerHTML = `
+      <img src="${currentUser.photoURL||''}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'">
+      <span style="color:#1a202c;font-weight:500;">${currentUser.displayName||currentUser.email}</span>
+      ${isAdmin
+        ? '<span style="background:rgba(14,158,106,0.12);color:#0e9e6a;font-weight:700;padding:2px 8px;border-radius:10px;font-size:11px;">✏️ 편집모드</span>'
+        : '<span style="background:rgba(100,116,139,0.1);color:#64748b;padding:2px 8px;border-radius:10px;font-size:11px;">👁 읽기전용</span>'}
+      <button id="signOutBtn" style="background:none;border:1px solid #dde3ec;border-radius:10px;padding:3px 10px;cursor:pointer;color:#64748b;font-family:'Noto Sans KR',sans-serif;font-size:11px;">로그아웃</button>
+    `;
+    document.getElementById('signOutBtn').onclick = () => signOut(auth);
   } else {
-    el.textContent = '🔴 연결 끊김';
-    el.style.background = 'rgba(220,38,38,0.1)';
-    el.style.color = '#dc2626';
-    el.style.border = '1px solid rgba(220,38,38,0.3)';
+    bar.innerHTML = `
+      <span style="color:#64748b;">빙고 프로모션 대시보드</span>
+      <button id="signInBtn" style="background:linear-gradient(135deg,#0078c8,#005fa3);color:#fff;border:none;border-radius:10px;padding:5px 14px;cursor:pointer;font-weight:700;font-family:'Noto Sans KR',sans-serif;font-size:12px;">🔑 Google 로그인 (편집)</button>
+    `;
+    document.getElementById('signInBtn').onclick = () =>
+      signInWithPopup(auth, provider).catch(e => showToast('로그인 실패: ' + e.message, true));
   }
 }
 
@@ -749,9 +345,7 @@ function showConnectionStatus(connected) {
 function renderAll() {
   const grid = document.getElementById('teamsGrid');
   grid.innerHTML = '';
-  TEAMS.forEach(team => {
-    grid.appendChild(buildTeamCard(team));
-  });
+  TEAMS.forEach(team => grid.appendChild(buildTeamCard(team)));
   updateScoreboard();
 }
 
@@ -760,13 +354,13 @@ function buildTeamCard(team) {
   const card = document.createElement('div');
   card.className = 'team-card';
   card.dataset.team = team.id;
-
   const locked = ts.locked;
+
   card.innerHTML = `
     <div class="team-header">
       <div>
         <div class="team-name">${team.name}</div>
-        <div class="team-members">${team.members.map(m => `${m.name}(${m.rank})`).join(' · ')}</div>
+        <div class="team-members">${team.members.map(m=>`${m.name}(${m.rank})`).join(' · ')}</div>
       </div>
       <div class="team-status ${locked ? 'status-locked' : 'status-setup'}">${locked ? '🔒 확정' : '⚙️ 배치중'}</div>
     </div>
@@ -775,10 +369,10 @@ function buildTeamCard(team) {
 
   const body = card.querySelector(`#body-t${team.id}`);
 
-  if (!locked) {
+  if (!locked && canEdit()) {
     const selWrap = document.createElement('div');
     selWrap.className = 'member-selector';
-    selWrap.innerHTML = `<label>📌 미션 배치할 팀원 선택</label>`;
+    selWrap.innerHTML = '<label>📌 미션 배치할 팀원 선택</label>';
     team.members.forEach(m => {
       const btn = document.createElement('button');
       btn.className = 'member-btn' + (ts.selectedMember === m.name ? ' active' : '');
@@ -786,24 +380,27 @@ function buildTeamCard(team) {
       btn.onclick = () => selectMember(team.id, m.name);
       selWrap.appendChild(btn);
     });
-
-    const commonBtn = document.createElement('button');
-    commonBtn.className = 'member-btn';
-    commonBtn.style.cssText = ts.selectedMember === '__COMMON__'
-      ? 'border-color:var(--accent3);background:rgba(14,158,106,0.1);color:var(--accent3);font-weight:700;'
-      : '';
-    commonBtn.innerHTML = `🤝 공동 <span class="member-rank">4칸</span>`;
-    commonBtn.onclick = () => selectMember(team.id, '__COMMON__');
-    selWrap.appendChild(commonBtn);
+    const cb = document.createElement('button');
+    cb.className = 'member-btn';
+    if (ts.selectedMember === '__COMMON__') cb.style.cssText = 'border-color:var(--accent3);background:rgba(14,158,106,0.1);color:var(--accent3);font-weight:700;';
+    cb.innerHTML = '🤝 공동 <span class="member-rank">4칸</span>';
+    cb.onclick = () => selectMember(team.id, '__COMMON__');
+    selWrap.appendChild(cb);
     body.appendChild(selWrap);
-  } else {
+  } else if (locked) {
     const notice = document.createElement('div');
     notice.className = 'locked-notice';
-    notice.textContent = '✅ 빙고판이 확정되었습니다. 미션 달성 시 칸을 클릭하여 체크하세요!';
+    notice.textContent = canEdit() ? '✅ 확정됨. 미션 달성 시 칸을 클릭하여 체크하세요!' : '✅ 빙고판이 확정되었습니다.';
+    body.appendChild(notice);
+  } else {
+    // 읽기전용 + 배치중
+    const notice = document.createElement('div');
+    notice.className = 'locked-notice';
+    notice.style.cssText = 'background:rgba(0,120,200,0.06);border-color:rgba(0,120,200,0.2);color:var(--accent);';
+    notice.textContent = '👁 읽기전용 — 팀장/본부장이 미션을 배치 중입니다.';
     body.appendChild(notice);
   }
 
-  // 빙고판
   const bingoGrid = document.createElement('div');
   bingoGrid.className = 'bingo-grid';
   bingoGrid.id = `bingo-${team.id}`;
@@ -811,67 +408,54 @@ function buildTeamCard(team) {
 
   for (let i = 0; i < 25; i++) {
     const cell = document.createElement('div');
-    const cellData = ts.cells[i];
-    const isBingoLine = bingoLines.has(i);
-    cell.className = 'bingo-cell';
-    if (isBingoLine) cell.classList.add('bingo-line');
+    const cd = ts.cells[i];
+    cell.className = 'bingo-cell' + (bingoLines.has(i) ? ' bingo-line' : '');
 
-    if (!cellData) {
+    if (!cd) {
       cell.classList.add(locked ? 'locked-empty' : 'empty');
       cell.innerHTML = `<span class="cell-num">${i+1}</span>`;
-      if (!locked) cell.onclick = () => onCellClick(team.id, i);
+      if (!locked && canEdit()) cell.onclick = () => onCellClick(team.id, i);
     } else {
       cell.classList.add(locked ? 'locked-assigned' : 'assigned');
-      if (cellData.checked) cell.classList.add('checked');
-      cell.innerHTML = `
-        <span class="cell-num">${i+1}</span>
-        <div class="cell-mission">${cellData.missionText.replace(/\n/g,'<br>')}</div>
-        <div class="cell-person">${cellData.personName}</div>
-      `;
-      if (!locked) cell.onclick = () => onCellClick(team.id, i);
-      else cell.onclick = () => toggleCheck(team.id, i);
+      if (cd.checked) cell.classList.add('checked');
+      cell.innerHTML = `<span class="cell-num">${i+1}</span><div class="cell-mission">${cd.missionText.replace(/\n/g,'<br>')}</div><div class="cell-person">${cd.personName}</div>`;
+      if (!locked && canEdit()) cell.onclick = () => onCellClick(team.id, i);
+      else if (locked && canEdit()) cell.onclick = () => toggleCheck(team.id, i);
     }
     bingoGrid.appendChild(cell);
   }
   body.appendChild(bingoGrid);
 
-  // 진행률
-  const assigned = ts.cells.filter(c => c !== null).length;
-  const checked = ts.cells.filter(c => c && c.checked).length;
+  const assigned = ts.cells.filter(c=>c!==null).length;
+  const checked = ts.cells.filter(c=>c&&c.checked).length;
   const progWrap = document.createElement('div');
-  progWrap.innerHTML = `
-    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${(assigned/25*100).toFixed(0)}%"></div></div>
-    <div class="progress-label">배치: ${assigned}/25칸</div>
-  `;
+  progWrap.innerHTML = `<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${(assigned/25*100).toFixed(0)}%"></div></div><div class="progress-label">배치: ${assigned}/25칸</div>`;
   body.appendChild(progWrap);
 
   const bingoCount = getBingoCount(ts.cells);
-  const bingoInfo = document.createElement('div');
-  bingoInfo.className = 'bingo-count';
-  bingoInfo.innerHTML = `
-    <span class="bingo-badge">🎯 빙고: ${bingoCount}줄</span>
-    <span class="bingo-badge" style="background:rgba(0,120,200,0.08);color:var(--accent);border-color:rgba(0,120,200,0.2)">✅ 체크: ${checked}칸</span>
-  `;
-  body.appendChild(bingoInfo);
+  const bi = document.createElement('div');
+  bi.className = 'bingo-count';
+  bi.innerHTML = `<span class="bingo-badge">🎯 빙고: ${bingoCount}줄</span><span class="bingo-badge" style="background:rgba(0,120,200,0.08);color:var(--accent);border-color:rgba(0,120,200,0.2)">✅ 체크: ${checked}칸</span>`;
+  body.appendChild(bi);
 
-  if (!locked) {
-    const lockBtn = document.createElement('button');
-    lockBtn.className = 'lock-btn';
-    lockBtn.textContent = '🔒 빙고판 확정하기';
-    lockBtn.style.marginTop = '14px';
-    lockBtn.disabled = assigned < 25;
-    lockBtn.title = assigned < 25 ? `${25-assigned}칸 더 배치 필요` : '';
-    lockBtn.onclick = () => openModal(team.id);
-    body.appendChild(lockBtn);
+  if (!locked && canEdit()) {
+    const lb = document.createElement('button');
+    lb.className = 'lock-btn';
+    lb.textContent = '🔒 빙고판 확정하기';
+    lb.style.marginTop = '14px';
+    lb.disabled = assigned < 25;
+    lb.title = assigned < 25 ? `${25-assigned}칸 더 배치 필요` : '';
+    lb.onclick = () => openModal(team.id);
+    body.appendChild(lb);
   }
 
   return card;
 }
 
 // ===================== INTERACTIONS =====================
-function selectMember(teamId, memberName) {
+function selectMember(teamId, name) {
   const ts = state.teams[teamId];
-  ts.selectedMember = memberName;
+  ts.selectedMember = name;
   ts.pendingMission = null;
   renderAll();
   showMissionPanel(teamId);
@@ -882,7 +466,6 @@ function showMissionPanel(teamId) {
   const team = TEAMS.find(t => t.id === teamId);
   const body = document.getElementById(`body-t${teamId}`);
   if (!body) return;
-
   const old = document.getElementById(`panel-${teamId}`);
   if (old) old.remove();
 
@@ -890,9 +473,7 @@ function showMissionPanel(teamId) {
   let missions, labelText, personLabel;
 
   if (isCommon) {
-    missions = COMMON_MISSIONS;
-    labelText = `🤝 공동 미션 선택 → 배치할 칸 클릭`;
-    personLabel = '공동';
+    missions = COMMON_MISSIONS; labelText = '🤝 공동 미션 선택 → 배치할 칸 클릭'; personLabel = '공동';
   } else {
     const member = team.members.find(m => m.name === ts.selectedMember);
     if (!member) return;
@@ -908,49 +489,37 @@ function showMissionPanel(teamId) {
 
   const mlist = panel.querySelector(`#mlist-${teamId}`);
   missions.forEach(m => {
-    const personKey = isCommon ? '__COMMON__' : ts.selectedMember;
-    const used = ts.usedMissions[personKey] && ts.usedMissions[personKey].has(m.id);
+    const key = isCommon ? '__COMMON__' : ts.selectedMember;
+    const used = ts.usedMissions[key] && ts.usedMissions[key].has(m.id);
     const isPending = ts.pendingMission && ts.pendingMission.missionId === m.id;
     const item = document.createElement('div');
     item.className = 'mission-item' + (used ? ' used' : '');
     if (isPending) item.style.cssText = 'border-color:var(--gold);color:var(--gold);background:rgba(184,134,11,0.08);';
 
-    const rankClass = isCommon ? 'common' : (() => {
-      const member = team.members.find(mb => mb.name === ts.selectedMember);
-      const r = member ? member.rank : '';
-      return r === '대리' || r === '주임' ? 'daeri' : r === '사원' ? 'sawon' : 'intern';
-    })();
-    const rankLabel = isCommon ? '공동' : (() => {
-      const member = team.members.find(mb => mb.name === ts.selectedMember);
-      return member ? member.rank : '';
-    })();
+    const rc = isCommon ? 'common' : (() => { const mb = team.members.find(x => x.name===ts.selectedMember); const r=mb?mb.rank:''; return r==='대리'||r==='주임'?'daeri':r==='사원'?'sawon':'intern'; })();
+    const rl = isCommon ? '공동' : (() => { const mb = team.members.find(x => x.name===ts.selectedMember); return mb?mb.rank:''; })();
 
-    item.innerHTML = `<span class="rank-badge rank-${rankClass}">${rankLabel}</span> ${m.text.replace(/\n/g,' ')} ${isPending ? '← 선택됨, 칸을 클릭하세요' : ''}`;
-
+    item.innerHTML = `<span class="rank-badge rank-${rc}">${rl}</span> ${m.text.replace(/\n/g,' ')}${isPending?' ← 선택됨, 칸을 클릭하세요':''}`;
     if (!used) {
-      item.onclick = () => {
-        ts.pendingMission = { missionId: m.id, missionText: m.text, personLabel };
-        showMissionPanel(teamId);
-      };
+      item.onclick = () => { ts.pendingMission = { missionId:m.id, missionText:m.text, personLabel }; showMissionPanel(teamId); };
     }
     mlist.appendChild(item);
   });
 
-  const bingoGrid = document.getElementById(`bingo-${teamId}`);
-  if (bingoGrid) body.insertBefore(panel, bingoGrid);
+  const bg = document.getElementById(`bingo-${teamId}`);
+  if (bg) body.insertBefore(panel, bg);
 }
 
-function onCellClick(teamId, cellIndex) {
-  if (!canEdit()) { alert("편집 권한이 없습니다. 관리자만 수정할 수 있어요."); return; }
+function onCellClick(teamId, idx) {
+  if (!canEdit()) { alert('편집 권한이 없습니다.'); return; }
   const ts = state.teams[teamId];
   if (ts.locked) return;
+  const cd = ts.cells[idx];
 
-  const cellData = ts.cells[cellIndex];
-
-  if (cellData) {
-    const ownerKey = cellData.personName === '공동' ? '__COMMON__' : cellData.personName;
-    if (ts.usedMissions[ownerKey]) ts.usedMissions[ownerKey].delete(cellData.missionId);
-    ts.cells[cellIndex] = null;
+  if (cd) {
+    const key = cd.personName === '공동' ? '__COMMON__' : cd.personName;
+    if (ts.usedMissions[key]) ts.usedMissions[key].delete(cd.missionId);
+    ts.cells[idx] = null;
     renderAll();
     if (ts.selectedMember) showMissionPanel(teamId);
     saveTeamToFirestore(teamId);
@@ -958,38 +527,31 @@ function onCellClick(teamId, cellIndex) {
   }
 
   if (!ts.pendingMission) {
-    if (!ts.selectedMember) {
-      alert('먼저 위에서 팀원 또는 공동을 선택해 주세요!');
-    } else {
-      alert('미션을 먼저 선택한 뒤 칸을 클릭해 주세요!');
-    }
+    alert(ts.selectedMember ? '미션을 먼저 선택한 뒤 칸을 클릭하세요!' : '먼저 팀원을 선택해 주세요!');
     return;
   }
 
   const { missionId, missionText, personLabel } = ts.pendingMission;
-  ts.cells[cellIndex] = { missionId, missionText, personName: personLabel, checked: false };
-  const ownerKey = personLabel === '공동' ? '__COMMON__' : personLabel;
-  if (ts.usedMissions[ownerKey]) ts.usedMissions[ownerKey].add(missionId);
+  ts.cells[idx] = { missionId, missionText, personName: personLabel, checked: false };
+  const key = personLabel === '공동' ? '__COMMON__' : personLabel;
+  if (ts.usedMissions[key]) ts.usedMissions[key].add(missionId);
   ts.pendingMission = null;
   renderAll();
   if (ts.selectedMember) showMissionPanel(teamId);
   saveTeamToFirestore(teamId);
 }
 
-function toggleCheck(teamId, cellIndex) {
-  if (!canEdit()) { alert("편집 권한이 없습니다. 관리자만 수정할 수 있어요."); return; }
+function toggleCheck(teamId, idx) {
+  if (!canEdit()) { alert('편집 권한이 없습니다.'); return; }
   const ts = state.teams[teamId];
-  if (!ts.locked) return;
-  const cellData = ts.cells[cellIndex];
-  if (!cellData) return;
-  cellData.checked = !cellData.checked;
+  if (!ts.locked || !ts.cells[idx]) return;
+  ts.cells[idx].checked = !ts.cells[idx].checked;
   renderAll();
   saveTeamToFirestore(teamId);
 }
 
-// ===================== LOCK =====================
 function openModal(teamId) {
-  if (!canEdit()) { alert("편집 권한이 없습니다. 관리자만 확정할 수 있어요."); return; }
+  if (!canEdit()) { alert('편집 권한이 없습니다.'); return; }
   lockTargetTeam = teamId;
   document.getElementById('modalOverlay').classList.add('show');
 }
@@ -999,85 +561,46 @@ function closeModal() {
 }
 function confirmLock() {
   if (!lockTargetTeam) return;
-  state.teams[lockTargetTeam].locked = true;
-  state.teams[lockTargetTeam].selectedMember = null;
-  state.teams[lockTargetTeam].pendingMission = null;
+  const id = lockTargetTeam;
+  state.teams[id].locked = true;
+  state.teams[id].selectedMember = null;
+  state.teams[id].pendingMission = null;
   closeModal();
   renderAll();
-  saveTeamToFirestore(lockTargetTeam);
-  lockTargetTeam = null;
+  saveTeamToFirestore(id);
 }
 
 // ===================== BINGO LOGIC =====================
+function getLines() {
+  const lines = [];
+  for (let r=0;r<5;r++){const row=[];for(let c=0;c<5;c++)row.push(r*5+c);lines.push(row);}
+  for (let c=0;c<5;c++){const col=[];for(let r=0;r<5;r++)col.push(r*5+c);lines.push(col);}
+  lines.push([0,6,12,18,24]); lines.push([4,8,12,16,20]);
+  return lines;
+}
 function getBingoLines(cells) {
-  const highlighted = new Set();
-  const lines = [];
-  for (let r = 0; r < 5; r++) { const row = []; for (let c = 0; c < 5; c++) row.push(r*5+c); lines.push(row); }
-  for (let c = 0; c < 5; c++) { const col = []; for (let r = 0; r < 5; r++) col.push(r*5+c); lines.push(col); }
-  lines.push([0,6,12,18,24]); lines.push([4,8,12,16,20]);
-  lines.forEach(line => { if (line.every(i => cells[i] && cells[i].checked)) line.forEach(i => highlighted.add(i)); });
-  return highlighted;
+  const h=new Set();
+  getLines().forEach(l=>{if(l.every(i=>cells[i]&&cells[i].checked))l.forEach(i=>h.add(i));});
+  return h;
 }
-
 function getBingoCount(cells) {
-  const lines = [];
-  for (let r = 0; r < 5; r++) { const row = []; for (let c = 0; c < 5; c++) row.push(r*5+c); lines.push(row); }
-  for (let c = 0; c < 5; c++) { const col = []; for (let r = 0; r < 5; r++) col.push(r*5+c); lines.push(col); }
-  lines.push([0,6,12,18,24]); lines.push([4,8,12,16,20]);
-  return lines.filter(line => line.every(i => cells[i] && cells[i].checked)).length;
+  return getLines().filter(l=>l.every(i=>cells[i]&&cells[i].checked)).length;
 }
-
 function updateScoreboard() {
-  TEAMS.forEach(t => {
-    const count = getBingoCount(state.teams[t.id].cells);
-    document.getElementById(`score-t${t.id}`).textContent = count;
-  });
-}
-
-// ===================== AUTH UI =====================
-function renderAuthBar() {
-  let bar = document.getElementById('authBar');
-  if (!bar) {
-    bar = document.createElement('div');
-    bar.id = 'authBar';
-    bar.style.cssText = `position:fixed;top:14px;left:50%;transform:translateX(-50%);
-      z-index:9999;display:flex;align-items:center;gap:10px;
-      background:#fff;border:1px solid var(--border);border-radius:24px;
-      padding:6px 16px;box-shadow:0 2px 12px rgba(0,0,0,0.1);
-      font-family:'Noto Sans KR',sans-serif;font-size:12px;`;
-    document.body.appendChild(bar);
-  }
-  if (currentUser) {
-    bar.innerHTML = `
-      <img src="${currentUser.photoURL || ''}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'">
-      <span style="color:var(--text);font-weight:500;">${currentUser.displayName || currentUser.email}</span>
-      ${isAdmin ? '<span style="background:rgba(14,158,106,0.12);color:#0e9e6a;font-weight:700;padding:2px 8px;border-radius:10px;font-size:11px;">✏️ 편집모드</span>' : '<span style="background:rgba(100,116,139,0.1);color:var(--text-dim);padding:2px 8px;border-radius:10px;font-size:11px;">👁 읽기전용</span>'}
-      <button id="signOutBtn" style="background:none;border:1px solid var(--border);border-radius:10px;padding:3px 10px;cursor:pointer;color:var(--text-dim);font-family:'Noto Sans KR',sans-serif;font-size:11px;">로그아웃</button>
-    `;
-    document.getElementById('signOutBtn').onclick = () => signOut(auth);
-  } else {
-    bar.innerHTML = `
-      <span style="color:var(--text-dim);">로그인하면 편집 가능</span>
-      <button id="signInBtn" style="background:linear-gradient(135deg,#0078c8,#005fa3);color:#fff;border:none;border-radius:10px;padding:5px 14px;cursor:pointer;font-weight:700;font-family:'Noto Sans KR',sans-serif;font-size:12px;">🔑 Google 로그인</button>
-    `;
-    document.getElementById('signInBtn').onclick = () => signInWithPopup(auth, provider).catch(e => alert('로그인 실패: ' + e.message));
-  }
+  TEAMS.forEach(t => { document.getElementById(`score-t${t.id}`).textContent = getBingoCount(state.teams[t.id].cells); });
 }
 
 // ===================== INIT =====================
-// Auth 상태 감지
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, user => {
   currentUser = user;
-  isAdmin = user && ADMIN_EMAILS.includes(user.email);
+  isAdmin = !!(user && ADMIN_EMAILS.includes(user.email));
   renderAuthBar();
-  showConnectionStatus(true);
   renderAll();
 });
 
-subscribeAll(); // Firestore 실시간 리스너 시작
-renderAll();    // 초기 렌더 (로그인 전에도 보이도록)
+subscribeAll();
+renderAll();
 
-// 전역 함수 노출 (onclick용)
 window.closeModal = closeModal;
 window.confirmLock = confirmLock;
 </script>
