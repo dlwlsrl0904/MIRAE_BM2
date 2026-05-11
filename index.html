@@ -625,10 +625,24 @@ async function fetchSheetData() {
         const mission = (row[offset+2] || '').trim();
         const actual  = (row[offset+3] || '').trim();
         const rate    = (row[offset+4] || '').trim();
+
+        // 미션 없으면 스킵
         if (!mission) return;
+
+        // 이름/직급은 값이 있을 때만 업데이트 (병합셀 대응)
         if (name)  currentName = name;
         if (rank)  currentRank = rank;
-        members.push({ name: currentName, rank: currentRank, mission, actual, rate });
+
+        // 공동 칸 미션 처리 (이름이 "공동 칸 미션" 또는 직급 없이 이관매출 등)
+        const isCommonSection = currentName.includes('공동');
+
+        members.push({
+          name: isCommonSection ? '공동 칸 미션' : currentName,
+          rank: isCommonSection ? '' : currentRank,
+          mission,
+          actual,
+          rate
+        });
       });
       sheetData[teamId] = members;
     });
@@ -688,17 +702,19 @@ function renderSheetTables() {
 
     let prevName = '';
     rows.forEach((r, i) => {
-      const isCommon = !r.rank;
-      const rateNum = parseFloat((r.rate || '0').replace('%','')) || 0;
+      const isCommon = r.name === '공동 칸 미션';
+      const rateNum = parseFloat((r.rate || '0').replace('%','').replace(',','')) || 0;
       const rateColor = rateNum >= 100 ? '#0e9e6a' : rateNum >= 50 ? '#b8860b' : 'var(--text-dim)';
-      const bgColor = isCommon ? 'rgba(14,158,106,0.04)' : (i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.01)');
+      const bgColor = isCommon ? 'rgba(14,158,106,0.04)' : (i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)');
       const showName = r.name !== prevName;
-      if (r.name) prevName = r.name;
+      if (showName) prevName = r.name;
 
       html += `
         <tr style="background:${bgColor};">
-          <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);font-weight:${showName?'700':'400'};color:${showName?'var(--text)':'transparent'};white-space:nowrap;">${showName ? r.name : '↑'}</td>
-          <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);color:var(--text-dim);white-space:nowrap;">${r.rank || '<span style="color:var(--accent3);font-weight:700;font-size:10px;">공동</span>'}</td>
+          <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);font-weight:${showName?'700':'400'};color:${showName?'var(--text)':'var(--border)'};white-space:nowrap;font-size:${isCommon?'11px':'12px'};">${showName ? r.name : '│'}</td>
+          <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);white-space:nowrap;">
+            ${r.rank ? `<span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:${r.rank==='대리'||r.rank==='주임'?'rgba(37,99,235,0.1)':r.rank==='사원'?'rgba(124,58,237,0.1)':'rgba(234,108,0,0.1)'};color:${r.rank==='대리'||r.rank==='주임'?'#2563eb':r.rank==='사원'?'#7c3aed':'#ea6c00'};">${r.rank}</span>` : '<span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:rgba(14,158,106,0.1);color:#0e9e6a;">공동</span>'}
+          </td>
           <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);color:var(--text);line-height:1.4;">${r.mission}</td>
           <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);text-align:right;font-weight:600;color:var(--text);">${r.actual || '-'}</td>
           <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);text-align:right;font-weight:700;color:${rateColor};">${r.rate || '0.00%'}</td>
