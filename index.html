@@ -715,7 +715,7 @@ function renderSheetTables() {
           <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);white-space:nowrap;">
             ${r.rank ? `<span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:${r.rank==='대리'||r.rank==='주임'?'rgba(37,99,235,0.1)':r.rank==='사원'?'rgba(124,58,237,0.1)':'rgba(234,108,0,0.1)'};color:${r.rank==='대리'||r.rank==='주임'?'#2563eb':r.rank==='사원'?'#7c3aed':'#ea6c00'};">${r.rank}</span>` : '<span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:rgba(14,158,106,0.1);color:#0e9e6a;">공동</span>'}
           </td>
-          <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);color:var(--text);line-height:1.4;">${r.mission}</td>
+          <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);color:var(--text);line-height:1.4;white-space:nowrap;">${r.mission}</td>
           <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);text-align:right;font-weight:600;color:var(--text);">${r.actual || '-'}</td>
           <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);text-align:right;font-weight:700;color:${rateColor};">${r.rate || '0.00%'}</td>
         </tr>
