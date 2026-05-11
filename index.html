@@ -631,11 +631,13 @@ async function fetchSheetData() {
 
         // 이름/직급은 값이 있을 때만 업데이트 (병합셀 대응)
         if (name)  currentName = name;
-        if (rank)  currentRank = rank;
 
-        // 공동 칸 미션 처리 (이름이 "공동 칸 미션" 또는 직급 없이 이관매출 등)
+        // 공동 섹션 판단 (이름 업데이트 후)
         const isCommonSection = currentName.includes('공동');
-        if (isCommonSection) { currentRank = ''; }
+
+        // 공동 섹션이 아닐 때만 직급 업데이트
+        if (!isCommonSection && rank) currentRank = rank;
+        if (isCommonSection) currentRank = '';
 
         members.push({
           name: isCommonSection ? '공동' : currentName,
