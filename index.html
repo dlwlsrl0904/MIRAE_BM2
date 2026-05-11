@@ -635,6 +635,7 @@ async function fetchSheetData() {
 
         // 공동 칸 미션 처리 (이름이 "공동 칸 미션" 또는 직급 없이 이관매출 등)
         const isCommonSection = currentName.includes('공동');
+        if (isCommonSection) { currentRank = ''; }
 
         members.push({
           name: isCommonSection ? '공동' : currentName,
@@ -689,7 +690,7 @@ function renderSheetTables() {
         <div style="overflow-x:auto;">
           <table style="width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;">
             <colgroup>
-              <col style="width:52px;">
+              <col style="width:80px;">
               <col style="width:42px;">
               <col style="width:auto;">
               <col style="width:80px;">
