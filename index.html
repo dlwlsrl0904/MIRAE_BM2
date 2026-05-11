@@ -637,7 +637,7 @@ async function fetchSheetData() {
         const isCommonSection = currentName.includes('공동');
 
         members.push({
-          name: isCommonSection ? '공동 칸 미션' : currentName,
+          name: isCommonSection ? '공동' : currentName,
           rank: isCommonSection ? '' : currentRank,
           mission,
           actual,
@@ -687,10 +687,17 @@ function renderSheetTables() {
           <span style="font-family:'Black Han Sans',sans-serif;font-size:16px;color:${color};">${tname}</span>
         </div>
         <div style="overflow-x:auto;">
-          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;">
+            <colgroup>
+              <col style="width:52px;">
+              <col style="width:42px;">
+              <col style="width:auto;">
+              <col style="width:80px;">
+              <col style="width:58px;">
+            </colgroup>
             <thead>
               <tr style="background:rgba(0,0,0,0.02);">
-                <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);color:var(--text-dim);font-size:11px;white-space:nowrap;">이름</th>
+                <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);color:var(--text-dim);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">이름</th>
                 <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);color:var(--text-dim);font-size:11px;">직급</th>
                 <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);color:var(--text-dim);font-size:11px;">미션</th>
                 <th style="padding:8px 10px;text-align:right;border-bottom:1px solid var(--border);color:var(--text-dim);font-size:11px;">달성현황</th>
@@ -711,9 +718,9 @@ function renderSheetTables() {
 
       html += `
         <tr style="background:${bgColor};">
-          <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);font-weight:${showName?'700':'400'};color:${showName?'var(--text)':'var(--border)'};white-space:nowrap;font-size:${isCommon?'11px':'12px'};">${showName ? r.name : '│'}</td>
+          <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);font-weight:${showName?'700':'400'};color:${showName?'var(--text)':'var(--border)'};white-space:nowrap;font-size:${isCommon?'11px':'12px'};overflow:hidden;text-overflow:ellipsis;">${showName ? r.name : '│'}</td>
           <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);white-space:nowrap;">
-            ${r.rank ? `<span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:${r.rank==='대리'||r.rank==='주임'?'rgba(37,99,235,0.1)':r.rank==='사원'?'rgba(124,58,237,0.1)':'rgba(234,108,0,0.1)'};color:${r.rank==='대리'||r.rank==='주임'?'#2563eb':r.rank==='사원'?'#7c3aed':'#ea6c00'};">${r.rank}</span>` : '<span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:rgba(14,158,106,0.1);color:#0e9e6a;">공동</span>'}
+            ${isCommon ? '' : r.rank ? `<span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:${r.rank==='대리'||r.rank==='주임'?'rgba(37,99,235,0.1)':r.rank==='사원'?'rgba(124,58,237,0.1)':'rgba(234,108,0,0.1)'};color:${r.rank==='대리'||r.rank==='주임'?'#2563eb':r.rank==='사원'?'#7c3aed':'#ea6c00'};">${r.rank}</span>` : ''}
           </td>
           <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);color:var(--text);line-height:1.4;white-space:nowrap;">${r.mission}</td>
           <td style="padding:7px 10px;border-bottom:1px solid rgba(0,0,0,0.04);text-align:right;font-weight:600;color:var(--text);">${r.actual || '-'}</td>
